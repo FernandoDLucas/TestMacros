@@ -110,8 +110,7 @@ extension DeclGroupSyntax {
 }
 
 func getFixtureForType(_ value: String) -> String {
-    
-    switch value {
+    switch value.replacingOccurrences(of: "?", with: "") {
     case "String":
         return """
             "someString"
@@ -125,11 +124,11 @@ func getFixtureForType(_ value: String) -> String {
             """
         } else {
             return """
-                [fixture()]
+                [.fixture()]
             """
         }
     default:
-        return "fixture()"
+        return ".fixture()"
     }
 
 }
