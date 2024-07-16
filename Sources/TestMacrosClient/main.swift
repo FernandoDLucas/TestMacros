@@ -1,10 +1,12 @@
 import TestMacros
 
 @Fixture
-struct TestFix {
+struct Island {
 
-    var text: String
-    var otherText: Int
-    var textArray: [String]
+    var name: String
+    var population: Int
+    var beachs: [String]
+    var neightboors: [Island]
 
 }
+

@@ -1,11 +1,5 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
-
-/// A macro that produces both a value and a string containing the
-/// source code that generated the value. For example,
-///
-///     #stringify(x + y)
-///
-/// produces a tuple `(x + y, "x + y")`.
+/// A macro that produces a fixture() function with default values
+/// values not mapped, will be initialized with .fixture()
+/// so make sure to implement .fixture() on custom objects
 @attached(member, names: named(fixture))
 public macro Fixture() = #externalMacro(module: "TestMacrosMacros", type: "FixtureMacro")

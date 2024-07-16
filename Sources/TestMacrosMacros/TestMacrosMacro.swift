@@ -71,10 +71,7 @@ public struct FixtureMacro: MemberMacro {
 extension VariableDeclSyntax {
     var isStoredProperty: Bool {
         guard let binding = bindings.first,
-              bindings.count == 1,
-              modifiers.contains(where: {
-                  $0.name == .keyword(.public)
-              }) || modifiers.isEmpty
+              bindings.count == 1
         else { return false }
         
         switch binding.accessorBlock?.accessors {
@@ -121,10 +118,16 @@ func getFixtureForType(_ value: String) -> String {
         """
     case "Int":
         return "0"
-    case _ where value.contains("["):
-        return """
-            ["someString"]
-        """
+    case let array where value.contains("["):
+        if array.contains("String") {
+            return """
+                ["someString"]
+            """
+        } else {
+            return """
+                [fixture()]
+            """
+        }
     default:
         return "fixture()"
     }
