@@ -8,6 +8,7 @@ public struct FixtureMacro: MemberMacro {
     struct CopyableMacroPlugin: CompilerPlugin {
         let providingMacros: [Macro.Type] = [
             FixtureMacro.self,
+            SpyMacro.self
         ]
     }
     
@@ -133,3 +134,32 @@ func getFixtureForType(_ value: String) -> String {
 
 }
 
+
+public struct SpyMacro: MemberMacro {
+
+    public static func expansion(
+        of node: AttributeSyntax,
+        providingMembersOf declaration: some DeclGroupSyntax,
+        in context: some MacroExpansionContext
+    ) throws -> [DeclSyntax] {
+        guard let declaration = declaration.as(ClassDeclSyntax.self) else {
+            return []
+        }
+        let functions = declaration.memberBlock.members.map {
+            $0.decl.as(FunctionDeclSyntax.self)
+        }.compactMap {
+            $0?.name.text
+        }.joined(separator: ",")
+
+        let newFunc = try FunctionDeclSyntax("private func that() {}").as(DeclSyntax.self)
+        return [
+            """
+        enum Functions {
+            case \(raw: functions)
+        }
+        
+        """
+        ]
+    }
+
+}

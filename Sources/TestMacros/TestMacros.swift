@@ -3,3 +3,6 @@
 /// so make sure to implement .fixture() on custom objects
 @attached(member, names: named(fixture))
 public macro Fixture() = #externalMacro(module: "TestMacrosMacros", type: "FixtureMacro")
+
+@attached(member, names: arbitrary)
+public macro Spy() = #externalMacro(module: "TestMacrosMacros", type: "SpyMacro")
